@@ -62,7 +62,6 @@ class AreasController extends AppController
             } else
                 $this->setMessage('validateError');
         }
-
     }
 
     public function edit($id = null)
@@ -90,14 +89,12 @@ class AreasController extends AppController
             } else
                 $this->setMessage('validateError');
         }
-
     }
 
     public function delete($id = null)
     {
 
         $this->checkAccess($this->name, __FUNCTION__);
-
 
 
         if ($this->Area->delete($id))

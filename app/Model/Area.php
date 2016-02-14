@@ -9,6 +9,7 @@ class Area extends AppModel
 
     public $name = "Area";
     public $label = 'Área';
+    public $displayField='controller_label';
     public $gender = 'a';
     public $hasMany = array('AreaChild' => array('className' => 'Area', 'foreignKey' => 'parent_id'));
 
