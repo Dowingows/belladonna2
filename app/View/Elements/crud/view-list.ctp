@@ -45,10 +45,10 @@ $func2ModelAndField = function ($key, $field) {
 
 
 /*Links to update or delete model's data*/
-$add_action = "/" . strtolower($controller_name) . "/add/";
-$view_action = "/" . strtolower($controller_name) . "/view/";
-$delete_action = "/" . strtolower($controller_name) . "/delete/";
-$update_action = "/" . strtolower($controller_name) . "/edit/";
+$add_action = "/" . $controller_name . "/add/";
+$view_action = "/" . $controller_name . "/view/";
+$delete_action = "/" . $controller_name . "/delete/";
+$update_action = "/" . $controller_name . "/edit/";
 ?>
 
 <?php if (empty($data)) { ?>

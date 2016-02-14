@@ -20,7 +20,7 @@
     <?php
     print $this->Html->script(['jquery-1.11.3/jquery.min', 'bootstrap3/bootstrap.min']);
     ?>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+
 </head>
 
 <body>
@@ -39,6 +39,7 @@
             <div class="clear"></div>
         </div>
     </div><!-- /.container -->
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
     <div class="container log-sql">
         <?= $this->element('sql_dump') ?>
     </div>

@@ -18,8 +18,8 @@ if (empty($model_name)) {
 }
 
 /*Links to update or delete model's data*/
-$delete_action = "/" . strtolower($controller_name) . "/delete/{$data[$model_name]['id']}";
-$update_action = "/" . strtolower($controller_name) . "/edit/{$data[$model_name]['id']} ";
+$delete_action = "/" . $controller_name . "/delete/{$data[$model_name]['id']}";
+$update_action = "/" . $controller_name . "/edit/{$data[$model_name]['id']} ";
 
 $func = function ($key, $f, array &$d) {
 
@@ -60,32 +60,32 @@ $func = function ($key, $f, array &$d) {
 
 ?>
 
-<div class="view">
-    <div class="row">
-        <h2 class="col-lg-8"><i class="<?= $icon_class ?>"></i> <?= $title ?></h2>
-        <div class="col-lg-4 btn-menu-view">
-            <div class="button-actions pull-right">
-                <?= $this->Html->link('<i class="fa fa-trash"></i> Excluir', $delete_action, array('class' => 'btn btn-mini btn-danger delete ', 'escape' => false));
-                ?>
-                <?= $this->Html->link('<i class="fa fa-pencil"></i> Editar', $update_action, array('class' => 'btn btn-mini btn-warning', 'escape' => false));
-                ?>
+    <div class="view">
+        <div class="row">
+            <h2 class="col-lg-8"><i class="<?= $icon_class ?>"></i> <?= $title ?></h2>
+            <div class="col-lg-4 btn-menu-view">
+                <div class="button-actions pull-right">
+                    <?= $this->Html->link('<i class="fa fa-trash"></i> Excluir', $delete_action, array('class' => 'btn btn-mini btn-danger delete ', 'escape' => false));
+                    ?>
+                    <?= $this->Html->link('<i class="fa fa-pencil"></i> Editar', $update_action, array('class' => 'btn btn-mini btn-warning', 'escape' => false));
+                    ?>
+                </div>
             </div>
         </div>
+
+        <table class="table table-striped">
+            <tbody>
+            <?php foreach ($fields as $key => $field): ?>
+                <tr>
+                    <?php
+                    $result = $func($key, $field, $data);
+                    ?>
+                    <td><?= $result['label'] ?></td>
+                    <td><?= $result['value'] ?></td>
+                </tr>
+            <?php endforeach; ?>
+
+        </table>
     </div>
 
-    <table class="table table-striped">
-        <tbody>
-        <?php foreach ($fields as $key => $field): ?>
-            <tr>
-                <?php
-                $result = $func($key, $field, $data);
-                ?>
-                <td><?= $result['label'] ?></td>
-                <td><?= $result['value'] ?></td>
-            </tr>
-        <?php endforeach; ?>
-
-    </table>
-</div>
-
-<?= $this->element('crud/delete-confirmation',['model'=>(new $model_name)->label]);?>
+<?= $this->element('crud/delete-confirmation', ['model' => (new $model_name)->label]); ?>

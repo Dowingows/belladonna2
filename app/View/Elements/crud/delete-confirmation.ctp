@@ -16,7 +16,6 @@
         </div>
     </div>
 </div>
-<?= $this->Html->script(['jquery-1.11.3/jquery.min']);?>
 <script>
     var deleteUrl;
     $(document).ready(function () {
