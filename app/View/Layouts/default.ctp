@@ -15,7 +15,12 @@
     print $this->Html->css(['bootstrap3/bootstrap.min', 'bootstrap3/custom', 'font-awesome/css/font-awesome.min', 'belladonna']);
     print $scripts_for_layout;
     ?>
-
+    <!-- Bootstrap core JavaScript
+  ================================================== -->
+    <?php
+    print $this->Html->script(['jquery-1.11.3/jquery.min', 'bootstrap3/bootstrap.min']);
+    ?>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
 </head>
 
 <body>
@@ -34,17 +39,8 @@
             <div class="clear"></div>
         </div>
     </div><!-- /.container -->
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-
-    <?php
-    print $this->Html->script(['jquery-1.11.3/jquery.min', 'bootstrap3/bootstrap.min']);
-    ?>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
     <div class="container log-sql">
         <?= $this->element('sql_dump') ?>
-     </div>
+    </div>
 </body>
 </html>

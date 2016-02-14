@@ -10,7 +10,7 @@ class B3FormHelper extends AppHelper
      * Attributes
      ----------------------------------------*/
 
-    public $helpers = array('Form');
+    public $helpers = array('Form', 'Html');
 
     private $defaultOptions = array(
 
@@ -111,6 +111,44 @@ class B3FormHelper extends AppHelper
         $options['div'] = false;
         $str .= $this->Form->input($fieldName, array_merge($this->defaultOptions, $options));
         $str .= $this->controlGroupClose();
+        return $str;
+    }
+
+    public function fieldNameToId($fieldName)
+    {
+        $input = explode(".", $fieldName);
+        $input_id = "";
+        if (!empty($input)) {
+            foreach ($input as $name) {
+                $input_id .= ucfirst($name);
+            }
+        }
+        return $input_id;
+    }
+
+    public function inputMask($fieldName, $options = array())
+    {
+        $input_id = $this->fieldNameToId($fieldName);
+
+        $url = $this->Html->url('/') . DS . 'js' . DS . 'jquery.maskedinput.min.js';
+        $script_mask_url = "<script src='{$url}'></script>";
+        $script_mask = "";
+        if (!empty($options['mask'])) {
+            $mask = $options['mask'];
+            $script_mask = "<script>$(document).ready(function() { $('#{$input_id}').mask('{$mask}');});</script>";
+        }
+        $str = $script_mask_url;
+        $str .= $this->controlGroupOpen($fieldName, $options);
+        if (!empty($options['prepend'])) {
+            $options['before'] = "<div class=\"input-prepend\"><span class=\"add-on\">{$options['prepend']}</span>";
+            $options['after'] .= '</div>';
+        }
+        $options['class'] = 'form-control';
+        $options['div'] = false;
+
+        $str .= $this->Form->input($fieldName, array_merge($this->defaultOptions, $options));
+        $str .= $this->controlGroupClose();
+        $str .= $script_mask;
         return $str;
     }
 
