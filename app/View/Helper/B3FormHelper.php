@@ -97,7 +97,7 @@ class B3FormHelper extends AppHelper
         return '</div>';
     }
 
-    public function input($fieldName, $options = array())
+    public function input($fieldName, $options = [])
     {
 
         $str = $this->controlGroupOpen($fieldName, $options);
@@ -120,22 +120,21 @@ class B3FormHelper extends AppHelper
         $input_id = "";
         if (!empty($input)) {
             foreach ($input as $name) {
-                $input_id .= ucfirst($name);
+                $input_id .= Inflector::camelize($name);
             }
         }
         return $input_id;
     }
 
-    public function inputMask($fieldName, $options = array())
+    public function inputMask($fieldName, $options = [])
     {
         $input_id = $this->fieldNameToId($fieldName);
 
-        $url = $this->Html->url('/') . DS . 'js' . DS . 'jquery.maskedinput.min.js';
-        $script_mask_url = "<script src='{$url}'></script>";
+        $script_mask_url = $this->importJs('jquery.maskedinput.min.js');
         $script_mask = "";
         if (!empty($options['mask'])) {
             $mask = $options['mask'];
-            $script_mask = "<script>$(document).ready(function() { $('#{$input_id}').mask('{$mask}');});</script>";
+            $script_mask = $this->addScript("$('#{$input_id}').mask('{$mask}');");
         }
         $str = $script_mask_url;
         $str .= $this->controlGroupOpen($fieldName, $options);
@@ -152,7 +151,45 @@ class B3FormHelper extends AppHelper
         return $str;
     }
 
-    public function check($fieldName, $options = array())
+
+    private function importCss($fileName){
+        $url = $this->Html->url('/')  . 'css' . DS .$fileName;
+        return "<link rel='stylesheet' type='text/css' href='{$url}'/>";
+    }
+    private function importJs($fileName){
+        $url = $this->Html->url('/')  . 'js' . DS .$fileName;
+        return  "<script src='{$url}'></script>";
+    }
+
+    private function addScript($script){
+        $str_script = "<script>$(document).ready(function() {".$script."});</script>";
+        return $str_script;
+    }
+
+    public function select2($fieldName,$options = []){
+        $input_id = $this->fieldNameToId($fieldName);
+
+        $script_select2 = $this->importJs('select2.min.js');
+        $css_select2 = $this->importCss('select2.min.css');
+
+        $script = $this->addScript("$('#{$input_id}').select2();");
+        $str = $script_select2;
+        $str .= $css_select2;
+        $str .= $this->controlGroupOpen($fieldName, $options);
+        if (!empty($options['prepend'])) {
+            $options['before'] = "<div class=\"input-prepend\"><span class=\"add-on\">{$options['prepend']}</span>";
+            $options['after'] .= '</div>';
+        }
+        $options['class'] = 'form-control';
+        $options['div'] = false;
+
+        $str .= $this->Form->input($fieldName, array_merge($this->defaultOptions, $options));
+        $str .= $this->controlGroupClose();
+        $str .= $script;
+        return $str;
+    }
+
+    public function check($fieldName, $options = [])
     {
 
         $str = $this->controlGroupOpen($fieldName, $options);
@@ -241,7 +278,7 @@ class B3FormHelper extends AppHelper
         return $str;
     }
 
-    public function radio($fieldName, $options = array())
+    public function radio($fieldName, $options = [])
     {
 
         $str = $this->controlGroupOpen($fieldName, $options);

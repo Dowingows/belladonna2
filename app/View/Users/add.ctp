@@ -4,7 +4,7 @@
         <?php
         print $this->B3Form->input('User.name', ['placeholder' => 'Nome do usuário']);
         print $this->B3Form->input('User.email', ['placeholder' => 'exemplo@dominio.com', 'type' => 'email']);
-        print $this->B3Form->input('User.profile_id', ['empty' => '-- Selecione --']);
+        print $this->B3Form->select2('User.profile_id', ['empty' => '-- Selecione --']);
         ?>
         <?= $this->element("form/submit-b3", ['cancel' => '/users']) ?>
     </div>
