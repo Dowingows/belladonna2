@@ -45,7 +45,7 @@ class B3FormHelper extends AppHelper
         $str = '<div class="form-group';
 
         $model = explode('.', $fieldName);
-        $field = $model[1];
+        $field = empty($model[1]) ? '' : $model[1];
         $model = $model[0];
         $before = $after = null;
 
