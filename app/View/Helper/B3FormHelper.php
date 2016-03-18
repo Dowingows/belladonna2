@@ -41,20 +41,26 @@ class B3FormHelper extends AppHelper
 
     private function controlGroupOpen(&$fieldName, &$options)
     {
+        $wrap = empty($options['wrap']) ? 'form-group' : $options['wrap'];
+        unset($options['wrap']);
 
-        $str = '<div class="form-group';
-
-        $model = explode('.', $fieldName);
-        $field = empty($model[1]) ? '' : $model[1];
-        $model = $model[0];
-        $before = $after = null;
-
+        $str = "<div class='{$wrap}";
+        $model = '';
+        $field = '';
         if (empty($options['label'])) {
 
-            App::import('Model', "{$model}");
-            $modelObject = new $model;
+            $model = explode('.', $fieldName);
+            $field = empty($model[1]) ? '' : $model[1];
+            $model = $model[0];
+            $before = $after = null;
+        }
 
-            $options['label'] = empty($modelObject->attributeLabels[$field]) ? $field : $modelObject->attributeLabels[$field];
+        if (empty($options['label'])) {
+            if (!isset($options['label'])) {
+                App::import('Model', "{$model}");
+                $modelObject = new $model;
+                $options['label'] = empty($modelObject->attributeLabels[$field]) ? $field : $modelObject->attributeLabels[$field];
+            }
         }
 
         if (!isset($options['required']))
@@ -71,8 +77,10 @@ class B3FormHelper extends AppHelper
             }
         }
 
-        $str .= '">';
-        $str .= $this->Form->label($fieldName, $options['label'], array('class' => 'control-label'));
+        $str .= "'>";
+        if (!empty($options['label']))
+            $str .= $this->Form->label($fieldName, $options['label'], array('class' => 'control-label'));
+
         unset($options['label']);
 
         return $str;
@@ -152,21 +160,26 @@ class B3FormHelper extends AppHelper
     }
 
 
-    private function importCss($fileName){
-        $url = $this->Html->url('/')  . 'css' . DS .$fileName;
+    private function importCss($fileName)
+    {
+        $url = $this->Html->url('/') . 'css' . DS . $fileName;
         return "<link rel='stylesheet' type='text/css' href='{$url}'/>";
     }
-    private function importJs($fileName){
-        $url = $this->Html->url('/')  . 'js' . DS .$fileName;
-        return  "<script src='{$url}'></script>";
+
+    private function importJs($fileName)
+    {
+        $url = $this->Html->url('/') . 'js' . DS . $fileName;
+        return "<script src='{$url}'></script>";
     }
 
-    private function addScript($script){
-        $str_script = "<script>$(document).ready(function() {".$script."});</script>";
+    private function addScript($script)
+    {
+        $str_script = "<script>$(document).ready(function() {" . $script . "});</script>";
         return $str_script;
     }
 
-    public function select2($fieldName,$options = []){
+    public function select2($fieldName, $options = [])
+    {
         $input_id = $this->fieldNameToId($fieldName);
 
         $script_select2 = $this->importJs('select2.min.js');

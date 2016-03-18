@@ -11,7 +11,7 @@
         print $this->B3Form->input('Area.action_label');
         print $this->B3Form->input('Area.icon_menu');
         ?>
-        <?= $this->element("form/submit-b3", ['cancel' => '/users']) ?>
+        <?= $this->element("form/submit-b3") ?>
     </div>
 </div>
 
