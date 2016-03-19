@@ -105,6 +105,41 @@ class B3FormHelper extends AppHelper
         return '</div>';
     }
 
+    public function date($fieldName, $options = [])
+    {
+        $input_id = $this->fieldNameToId($fieldName);
+
+        $script_moment_url = $this->importJs('moment.js');
+        $script_date_url = $this->importJs('bootstrap3/bootstrap-datetimepicker.min.js');
+        $css_date = $this->importCss('bootstrap3/bootstrap-datetimepicker.min.css');
+        $script_date = "";
+        $format = "";
+        if (!empty($options['format'])) {
+            $format = $options['format'];
+
+        }else{
+            $format = 'DD/MM/Y HH:mm';
+        }
+
+        $script_date = $this->addScript("$('#{$input_id}').datetimepicker({format:'{$format}'});");
+
+        $str = $script_moment_url;
+        $str .= $script_date_url;
+        $str .= $css_date;
+        $str .= $this->controlGroupOpen($fieldName, $options);
+        if (!empty($options['prepend'])) {
+            $options['before'] = "<div class=\"input-prepend\"><span class=\"add-on\">{$options['prepend']}</span>";
+            $options['after'] .= '</div>';
+        }
+        $options['class'] = 'form-control';
+        $options['div'] = false;
+
+        $str .= $this->Form->input($fieldName, array_merge($this->defaultOptions, $options));
+        $str .= $this->controlGroupClose();
+        $str .= $script_date;
+        return $str;
+    }
+
     public function input($fieldName, $options = [])
     {
 
